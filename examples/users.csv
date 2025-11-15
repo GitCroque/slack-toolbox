@@ -1,0 +1,5 @@
+email,first_name,last_name,channels
+john.doe@example.com,John,Doe,"general,random"
+jane.smith@example.com,Jane,Smith,general
+bob.johnson@example.com,Bob,Johnson,"general,engineering"
+alice.williams@example.com,Alice,Williams,"general,random,marketing"

@@ -1,0 +1,10 @@
+# Slack Management Platform - Python Dependencies
+
+# Slack SDK
+slack-sdk>=3.23.0
+
+# HTTP requests (used by slack-sdk)
+requests>=2.31.0
+
+# Optional but recommended for better performance
+# aiohttp>=3.9.0  # Uncomment for async support

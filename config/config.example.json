@@ -1,0 +1,11 @@
+{
+  "slack_token": "xoxb-your-bot-token-here",
+  "workspace_name": "YourCompany",
+  "default_export_format": "csv",
+  "timezone": "Europe/Paris",
+  "log_level": "INFO",
+  "max_retries": 3,
+  "rate_limit_delay": 1,
+  "backup_directory": "backups",
+  "export_directory": "exports"
+}

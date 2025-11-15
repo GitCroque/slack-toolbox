@@ -1,0 +1,57 @@
+# Configuration with secrets
+config/config.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Exports and backups
+exports/
+backups/
+backup/
+*.csv
+*.json
+!config/config.example.json
+!examples/*.csv
+!examples/*.json
+
+# Temporary files
+tmp/
+temp/

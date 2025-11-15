@@ -1,0 +1,9 @@
+name,description,private
+project-alpha,Discussion for Alpha project,false
+engineering,Engineering team channel,false
+marketing,Marketing team discussions,false
+sales,Sales team channel,false
+leadership,Leadership team - confidential,true
+hr-confidential,Human resources - private,true
+random,Random discussions,false
+announcements,Company announcements,false
