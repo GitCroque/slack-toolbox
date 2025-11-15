@@ -39,26 +39,38 @@ Une collection complète de scripts pour gérer, auditer et administrer votre es
 
 ## 🚀 Installation
 
-### Prérequis
-- Python 3.8 ou supérieur
-- Un compte Slack avec une offre payante
-- Permissions administrateur sur votre workspace Slack
-
-### Installation sur macOS
+### Installation automatique (recommandée)
 
 ```bash
 # Cloner le repository
 git clone https://github.com/GitCroque/slack-script.git
 cd slack-script
 
+# Installation automatique
+./install.sh
+```
+
+Le script install.sh va :
+- ✅ Vérifier Python 3.8+
+- ✅ Installer les dépendances
+- ✅ Créer la configuration
+- ✅ Configurer les permissions
+- ✅ Tester la connexion
+
+### Installation manuelle
+
+```bash
 # Installer les dépendances
 pip3 install -r requirements.txt
 
-# Copier le fichier de configuration exemple
+# Copier le fichier de configuration
 cp config/config.example.json config/config.json
 
-# Éditer la configuration avec votre token Slack
+# Éditer avec votre token Slack
 nano config/config.json
+
+# Tester
+make test
 ```
 
 ## 🔑 Configuration
@@ -99,12 +111,68 @@ nano config/config.json
 }
 ```
 
-## 📚 Guide d'utilisation
+## ⚡ Utilisation rapide avec Make
+
+Toutes les commandes sont disponibles via Makefile pour une utilisation simplifiée :
+
+```bash
+# Voir toutes les commandes disponibles
+make help
+
+# Gestion des utilisateurs
+make list-users              # Lister tous les utilisateurs
+make list-admins             # Lister les administrateurs
+make export-users            # Exporter en CSV
+make user-stats              # Statistiques utilisateurs
+make invite-users FILE=users.csv  # Inviter depuis CSV
+
+# Gestion des canaux
+make list-channels           # Lister tous les canaux
+make find-inactive DAYS=90   # Canaux inactifs
+make create-channels FILE=channels.csv
+
+# Audit et rapports
+make audit-permissions       # Audit des permissions
+make inactive-users DAYS=60  # Utilisateurs inactifs
+make find-duplicates         # Détecter les doublons
+make activity-report DAYS=30 # Rapport d'activité
+
+# Utilitaires
+make stats                   # Statistiques workspace
+make backup                  # Backup complet
+make search QUERY="john"     # Recherche universelle
+make dashboard               # Générer dashboard HTML
+make validate-csv FILE=users.csv  # Valider CSV
+make template TYPE=users     # Générer template CSV
+
+# CLI interactif
+make interactive             # Démarrer l'interface interactive
+```
+
+## 📚 Guide d'utilisation détaillé
+
+### CLI Interactif
+
+Pour une utilisation simplifiée avec menu interactif :
+
+```bash
+make interactive
+# ou
+python3 slack-manager.py
+```
+
+Interface menu avec :
+- Gestion des utilisateurs
+- Gestion des canaux
+- Audit et rapports
+- Utilitaires
 
 ### Gestion des Utilisateurs
 
 #### Lister tous les utilisateurs
 ```bash
+make list-users
+# ou
 python3 scripts/users/list_users.py
 ```
 
@@ -241,16 +309,50 @@ Ces scripts peuvent effectuer des modifications importantes sur votre workspace 
 3. Vérifier les permissions de votre token
 4. Lire la documentation de chaque script
 
+## 🆕 Nouvelles fonctionnalités
+
+### Makefile - Commandes simplifiées
+Utilisation ultra-simplifiée avec `make` :
+- `make help` - Liste toutes les commandes
+- `make install` - Installation automatique
+- `make test` - Test de connexion
+- `make stats` - Statistiques rapides
+- Plus de 30 commandes disponibles !
+
+### CLI Interactif
+Interface menu pour utilisation sans ligne de commande :
+```bash
+make interactive
+```
+
+### Outils avancés
+- **Recherche universelle** - Chercher dans users, channels, files
+- **Validateur CSV** - Vérifier les CSV avant import
+- **Générateur de templates** - Templates CSV prêts à l'emploi
+- **Détection de doublons** - Trouver les comptes similaires
+- **Rapport d'activité** - Analytics détaillées du workspace
+- **Dashboard HTML** - Vue d'ensemble visuelle
+- **Gestion emojis** - Lister les emojis personnalisés
+
+### Automatisation
+Scripts cron prêts à l'emploi dans `cron/` :
+- Backup quotidien automatique
+- Rapport hebdomadaire des inactifs
+- Audit mensuel complet
+
+Voir `cron/README.md` pour la configuration.
+
 ## 📖 Documentation
 
-- **[SLACK_API_GUIDE.md](SLACK_API_GUIDE.md)** - Guide complet de l'API Slack (900+ lignes)
+- **[SLACK_API_GUIDE.md](SLACK_API_GUIDE.md)** - Guide complet de l'API Slack (1300+ lignes)
   - Concepts fondamentaux
   - Authentification et permissions
   - Toutes les méthodes API
-  - Exemples pratiques
+  - 3 exemples pratiques complets
   - Gestion des erreurs et rate limiting
   - Debugging
 
+- **[FAQ.md](FAQ.md)** - Questions fréquentes et troubleshooting
 - **[QUICKSTART.md](QUICKSTART.md)** - Démarrage rapide en 5 minutes
 - **[EXAMPLES.md](examples/EXAMPLES.md)** - 30+ exemples d'utilisation
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Guide de contribution
