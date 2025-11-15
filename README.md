@@ -2,6 +2,8 @@
 
 Une collection complète de scripts pour gérer, auditer et administrer votre espace de travail Slack.
 
+> 📚 **Nouveau !** [Guide complet de l'API Slack](SLACK_API_GUIDE.md) - Documentation détaillée pour comprendre et utiliser l'API Slack
+
 ## 🎯 Fonctionnalités
 
 ### Gestion des Utilisateurs
@@ -239,11 +241,26 @@ Ces scripts peuvent effectuer des modifications importantes sur votre workspace 
 3. Vérifier les permissions de votre token
 4. Lire la documentation de chaque script
 
+## 📖 Documentation
+
+- **[SLACK_API_GUIDE.md](SLACK_API_GUIDE.md)** - Guide complet de l'API Slack (900+ lignes)
+  - Concepts fondamentaux
+  - Authentification et permissions
+  - Toutes les méthodes API
+  - Exemples pratiques
+  - Gestion des erreurs et rate limiting
+  - Debugging
+
+- **[QUICKSTART.md](QUICKSTART.md)** - Démarrage rapide en 5 minutes
+- **[EXAMPLES.md](examples/EXAMPLES.md)** - 30+ exemples d'utilisation
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Guide de contribution
+
 ## 🆘 Support
 
 Pour toute question ou problème:
 - Ouvrez une issue sur GitHub
-- Consultez la documentation Slack API: https://api.slack.com/
+- Consultez le [Guide API Slack](SLACK_API_GUIDE.md) pour les détails techniques
+- Documentation officielle Slack API: https://api.slack.com/
 
 ## 🎯 Roadmap
 
