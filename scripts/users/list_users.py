@@ -3,71 +3,94 @@
 List all users in the Slack workspace with details
 """
 
-import argparse
 import sys
 from pathlib import Path
 
 # Add lib directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from lib.slack_client import SlackManager
+from lib.script_base import SlackScript
 from lib.utils import print_table, save_to_csv, save_to_json, get_user_display_name
-from lib.logger import setup_logger
 
 
-def main():
-    parser = argparse.ArgumentParser(description='List all Slack users')
-    parser.add_argument('--include-deleted', action='store_true',
-                       help='Include deactivated users')
-    parser.add_argument('--include-bots', action='store_true',
-                       help='Include bot users')
-    parser.add_argument('--role', choices=['admin', 'owner', 'member', 'guest'],
-                       help='Filter by role')
-    parser.add_argument('--export', choices=['csv', 'json'],
-                       help='Export to file format')
-    parser.add_argument('--output', help='Output filename for export')
-    parser.add_argument('--verbose', action='store_true',
-                       help='Show detailed information')
+class ListUsersScript(SlackScript):
+    """Script to list all Slack users with filtering and export options"""
 
-    args = parser.parse_args()
+    def setup_arguments(self, parser):
+        """Add script-specific arguments"""
+        parser.add_argument('--include-deleted', action='store_true',
+                           help='Include deactivated users')
+        parser.add_argument('--include-bots', action='store_true',
+                           help='Include bot users')
+        parser.add_argument('--role', choices=['admin', 'owner', 'member', 'guest'],
+                           help='Filter by role')
+        parser.add_argument('--export', choices=['csv', 'json'],
+                           help='Export to file format')
+        parser.add_argument('--output', help='Output filename for export')
+        parser.add_argument('--verbose', action='store_true',
+                           help='Show detailed information')
 
-    logger = setup_logger('list_users')
-
-    try:
-        # Initialize Slack client
-        slack = SlackManager()
-        logger.info("Connected to Slack workspace")
-
+    def execute(self):
+        """Main script logic"""
         # Get all users
-        logger.info("Fetching users...")
-        users = slack.list_users(include_deleted=args.include_deleted)
+        self.logger.info("Fetching users...")
+        users = self.slack.list_users(include_deleted=self.args.include_deleted)
 
         # Filter users
-        filtered_users = []
+        filtered_users = self._filter_users(users)
+        self.logger.info(f"Found {len(filtered_users)} users")
+
+        # Prepare data for display/export
+        user_data = self._prepare_user_data(filtered_users)
+
+        # Export or display
+        if self.args.export == 'csv':
+            output_file = self.args.output or 'users_export.csv'
+            if not self.dry_run_check(f"Export {len(user_data)} users to {output_file}"):
+                save_to_csv(user_data, output_file)
+        elif self.args.export == 'json':
+            output_file = self.args.output or 'users_export.json'
+            if not self.dry_run_check(f"Export {len(user_data)} users to {output_file}"):
+                save_to_json(user_data, output_file)
+        else:
+            # Display as table
+            headers = ['name', 'display_name', 'email', 'role', 'status']
+            if self.args.verbose:
+                headers.extend(['title', 'timezone'])
+
+            print_table(user_data, headers=headers)
+            print(f"\nTotal: {len(user_data)} users")
+
+    def _filter_users(self, users):
+        """Filter users based on arguments"""
+        filtered = []
+
         for user in users:
             # Skip bots unless requested
-            if user.get('is_bot') and not args.include_bots:
+            if user.get('is_bot') and not self.args.include_bots:
                 continue
 
             # Filter by role
-            if args.role:
-                if args.role == 'admin' and not user.get('is_admin'):
+            if self.args.role:
+                if self.args.role == 'admin' and not user.get('is_admin'):
                     continue
-                elif args.role == 'owner' and not user.get('is_owner'):
+                elif self.args.role == 'owner' and not user.get('is_owner'):
                     continue
-                elif args.role == 'guest' and not (user.get('is_restricted') or user.get('is_ultra_restricted')):
+                elif self.args.role == 'guest' and not (user.get('is_restricted') or user.get('is_ultra_restricted')):
                     continue
-                elif args.role == 'member' and (user.get('is_admin') or user.get('is_owner') or
-                                               user.get('is_restricted') or user.get('is_ultra_restricted')):
+                elif self.args.role == 'member' and (user.get('is_admin') or user.get('is_owner') or
+                                                     user.get('is_restricted') or user.get('is_ultra_restricted')):
                     continue
 
-            filtered_users.append(user)
+            filtered.append(user)
 
-        logger.info(f"Found {len(filtered_users)} users")
+        return filtered
 
-        # Prepare data for display/export
+    def _prepare_user_data(self, users):
+        """Prepare user data for display/export"""
         user_data = []
-        for user in filtered_users:
+
+        for user in users:
             profile = user.get('profile', {})
 
             # Determine role
@@ -101,7 +124,7 @@ def main():
                 'timezone': user.get('tz_label', ''),
             }
 
-            if args.verbose:
+            if self.args.verbose:
                 user_info.update({
                     'title': profile.get('title', ''),
                     'phone': profile.get('phone', ''),
@@ -110,26 +133,12 @@ def main():
 
             user_data.append(user_info)
 
-        # Export or display
-        if args.export == 'csv':
-            output_file = args.output or 'users_export.csv'
-            save_to_csv(user_data, output_file)
-        elif args.export == 'json':
-            output_file = args.output or 'users_export.json'
-            save_to_json(user_data, output_file)
-        else:
-            # Display as table
-            headers = ['name', 'display_name', 'email', 'role', 'status']
-            if args.verbose:
-                headers.extend(['title', 'timezone'])
-
-            print_table(user_data, headers=headers)
-            print(f"\nTotal: {len(user_data)} users")
-
-    except Exception as e:
-        logger.error(f"Error: {e}")
-        sys.exit(1)
+        return user_data
 
 
 if __name__ == '__main__':
-    main()
+    script = ListUsersScript(
+        name='list_users',
+        description='List all Slack users with filtering and export options'
+    )
+    sys.exit(script.run())
