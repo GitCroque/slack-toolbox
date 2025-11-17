@@ -57,6 +57,27 @@ Le script install.sh va :
 - ✅ Configurer les permissions
 - ✅ Tester la connexion
 
+### Installation comme package Python (nouveau!)
+
+```bash
+# Installation en mode éditable (recommandé pour développement)
+pip install -e .
+
+# Installation complète avec toutes les fonctionnalités
+pip install -e ".[all]"
+
+# Installation pour développement
+pip install -e ".[dev]"
+```
+
+Après l'installation, vous aurez accès aux commandes globales:
+- `slack-manager` - Interface CLI principale
+- `slack-wizard` - Assistant de configuration
+- `slack-test` - Test de connexion
+- `slack-backup` - Sauvegarde workspace
+- `slack-alerts` - Système d'alertes
+- Et bien d'autres...
+
 ### Installation manuelle
 
 ```bash
@@ -261,26 +282,42 @@ python3 scripts/utils/workspace_stats.py
 
 ```
 slack-script/
-├── README.md
-├── requirements.txt
-├── config/
-│   ├── config.example.json
-│   └── config.json (votre configuration)
-├── scripts/
-│   ├── users/           # Gestion des utilisateurs
-│   ├── channels/        # Gestion des canaux
-│   ├── audit/           # Audit et conformité
-│   ├── workspace/       # Gestion workspace
-│   └── utils/           # Utilitaires
-├── lib/
-│   ├── slack_client.py  # Client Slack centralisé
-│   ├── utils.py         # Fonctions utilitaires
-│   └── logger.py        # Système de logging
-└── examples/
-    ├── users.csv
-    ├── channels.csv
-    └── bulk_operations.md
+├── README.md                    # Ce fichier
+├── ARCHITECTURE.md              # Documentation architecture
+├── pyproject.toml               # Configuration du package
+├── requirements.txt             # Dépendances
+│
+├── config/                      # Configuration
+│   ├── config.example.json      # Exemple de configuration
+│   └── config.json              # Votre configuration (gitignored)
+│
+├── lib/                         # Bibliothèque principale
+│   ├── slack_client.py          # Client API Slack (wrapper)
+│   ├── utils.py                 # Fonctions utilitaires
+│   ├── logger.py                # Système de logging
+│   ├── validators.py            # Validation des entrées
+│   ├── script_base.py           # Classe de base pour scripts
+│   ├── alerts.py                # Système d'alertes
+│   ├── notifier.py              # Notifications multi-canal
+│   └── pdf_generator.py         # Génération de PDF
+│
+├── scripts/                     # Scripts CLI organisés par domaine
+│   ├── users/                   # Gestion des utilisateurs
+│   ├── channels/                # Gestion des canaux
+│   ├── audit/                   # Audit et conformité
+│   ├── workspace/               # Configuration workspace
+│   ├── backup/                  # Sauvegarde et restauration
+│   ├── reports/                 # Rapports et analytics
+│   ├── monitoring/              # Surveillance et alertes
+│   └── tools/                   # Outils utilitaires
+│
+├── tests/                       # Tests unitaires et d'intégration
+├── examples/                    # Exemples et templates
+├── cron/                        # Scripts d'automatisation
+└── .github/workflows/           # CI/CD GitHub Actions
 ```
+
+Pour plus de détails sur l'architecture, consultez [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## 🛡️ Sécurité
 
@@ -494,7 +531,75 @@ Hooks configurés :
 
 Voir [PRE_COMMIT_GUIDE.md](PRE_COMMIT_GUIDE.md) pour le guide complet.
 
+## 🏗️ Architecture et Qualité de Code
+
+### Organisation Optimisée
+
+Le projet a été entièrement réorganisé pour une meilleure maintenabilité:
+
+**✅ Structure Modulaire**
+- Scripts organisés par domaine fonctionnel (users/, channels/, backup/, reports/, etc.)
+- Séparation claire entre bibliothèque (`lib/`) et CLI (`scripts/`)
+- Package Python complet avec `pyproject.toml`
+
+**✅ Classe de Base pour Scripts**
+- `SlackScript` réduit le boilerplate de 80%+
+- Gestion standardisée des erreurs
+- Lifecycle management (setup, execute, cleanup)
+- Support dry-run intégré
+
+**✅ Validation Robuste**
+- Module `validators.py` pour toutes les entrées
+- Protection contre path traversal
+- Validation des IDs Slack, emails, URLs
+- Exceptions typées (ValidationError)
+
+**✅ Package Python Complet**
+- Installation via `pip install -e .`
+- Commandes CLI globales (`slack-manager`, `slack-backup`, etc.)
+- Dépendances optionnelles (pdf, test, dev)
+- Distribution possible via PyPI
+
+**✅ Imports Explicites**
+- Fini les `from lib.utils import *`
+- Tous les exports clairement définis dans `__all__`
+- Meilleure complétion IDE
+- Pas de pollution du namespace
+
+### Qualité et Sécurité
+
+**Code Quality**
+- Type hints sur fonctions principales
+- Docstrings Google style
+- Pre-commit hooks (black, flake8, isort, bandit)
+- Linting automatique dans CI/CD
+
+**Security**
+- Input validation systématique
+- Protection secrets (tokens jamais loggés)
+- Scan sécurité avec bandit
+- Audit des dépendances avec safety
+
+**Testing**
+- Tests unitaires avec pytest
+- Mocking pour éviter appels API réels
+- Coverage tracking
+- Tests multi-versions Python (3.8-3.11)
+
+Pour plus de détails, consultez [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ## 📖 Documentation
+
+### Guides principaux
+
+- **[README.md](README.md)** - Ce fichier - Vue d'ensemble et utilisation
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Architecture détaillée du projet
+  - Structure des composants
+  - Flux de données
+  - Patterns et conventions
+  - Design decisions
+
+### Guides techniques
 
 - **[SLACK_API_GUIDE.md](SLACK_API_GUIDE.md)** - Guide complet de l'API Slack (1300+ lignes)
   - Concepts fondamentaux
@@ -509,6 +614,8 @@ Voir [PRE_COMMIT_GUIDE.md](PRE_COMMIT_GUIDE.md) pour le guide complet.
   - Utilisation et bonnes pratiques
   - Résolution des problèmes
   - Personnalisation des hooks
+
+### Guides utilisateur
 
 - **[FAQ.md](FAQ.md)** - Questions fréquentes et troubleshooting
 - **[QUICKSTART.md](QUICKSTART.md)** - Démarrage rapide en 5 minutes

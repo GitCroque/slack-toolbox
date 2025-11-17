@@ -33,7 +33,7 @@ install: ## Install dependencies and setup configuration
 
 test: ## Test Slack API connection
 	@echo "🧪 Testing Slack connection..."
-	@$(PYTHON) scripts/utils/test_connection.py
+	@$(PYTHON) scripts/tools/test_connection.py
 
 clean: ## Clean generated files and caches
 	@echo "🧹 Cleaning..."
@@ -131,16 +131,16 @@ export-channel: ## Export channel history (usage: make export-channel CHANNEL=ge
 ##@ Utilities
 
 stats: ## Display workspace statistics
-	@$(PYTHON) scripts/utils/workspace_stats.py
+	@$(PYTHON) scripts/reports/workspace_stats.py
 
 backup: ## Create full workspace backup
 	@echo "💾 Creating backup..."
-	@$(PYTHON) scripts/utils/full_backup.py --output-dir backups
+	@$(PYTHON) scripts/backup/create_backup.py --output-dir backups
 	@echo "✅ Backup complete!"
 
 backup-full: ## Create full backup including messages
 	@echo "💾 Creating full backup with message history..."
-	@$(PYTHON) scripts/utils/full_backup.py --output-dir backups --include-messages --message-limit 500
+	@$(PYTHON) scripts/backup/create_backup.py --output-dir backups --include-messages --message-limit 500
 	@echo "✅ Full backup complete!"
 
 search: ## Universal search (usage: make search QUERY=john)
@@ -149,7 +149,7 @@ search: ## Universal search (usage: make search QUERY=john)
 		echo "Usage: make search QUERY=john"; \
 		exit 1; \
 	fi
-	@$(PYTHON) scripts/utils/search.py --query "$(QUERY)"
+	@$(PYTHON) scripts/tools/search.py --query "$(QUERY)"
 
 validate-csv: ## Validate CSV file (usage: make validate-csv FILE=users.csv)
 	@if [ -z "$(FILE)" ]; then \
@@ -157,7 +157,7 @@ validate-csv: ## Validate CSV file (usage: make validate-csv FILE=users.csv)
 		echo "Usage: make validate-csv FILE=users.csv"; \
 		exit 1; \
 	fi
-	@$(PYTHON) scripts/utils/validate_csv.py $(FILE)
+	@$(PYTHON) scripts/tools/validate_csv.py $(FILE)
 
 template: ## Generate CSV template (usage: make template TYPE=users)
 	@if [ -z "$(TYPE)" ]; then \
@@ -165,7 +165,7 @@ template: ## Generate CSV template (usage: make template TYPE=users)
 		echo "Usage: make template TYPE=users (or channels)"; \
 		exit 1; \
 	fi
-	@$(PYTHON) scripts/utils/generate_template.py --type $(TYPE)
+	@$(PYTHON) scripts/tools/generate_template.py --type $(TYPE)
 
 find-duplicates: ## Find duplicate users
 	@$(PYTHON) scripts/audit/find_duplicates.py
@@ -174,7 +174,7 @@ activity-report: ## Generate activity report (usage: make activity-report DAYS=3
 	@$(PYTHON) scripts/audit/activity_report.py --days $(or $(DAYS),30)
 
 dashboard: ## Generate HTML dashboard
-	@$(PYTHON) scripts/utils/generate_dashboard.py
+	@$(PYTHON) scripts/reports/generate_dashboard.py
 	@echo "✅ Dashboard generated: dashboard.html"
 
 ##@ Enterprise Features
@@ -188,7 +188,7 @@ export-pdf: ## Export users to PDF (usage: make export-pdf TYPE=users OUTPUT=rep
 		echo "Usage: make export-pdf TYPE=users OUTPUT=report.pdf"; \
 		exit 1; \
 	fi
-	@$(PYTHON) scripts/utils/export_pdf.py --type $(TYPE) $(if $(OUTPUT),--output $(OUTPUT),)
+	@$(PYTHON) scripts/reports/export_pdf.py --type $(TYPE) $(if $(OUTPUT),--output $(OUTPUT),)
 
 notify: ## Send Slack notification (usage: make notify MSG="Backup complete")
 	@if [ -z "$(MSG)" ]; then \
@@ -196,16 +196,16 @@ notify: ## Send Slack notification (usage: make notify MSG="Backup complete")
 		echo "Usage: make notify MSG=\"Your message here\""; \
 		exit 1; \
 	fi
-	@$(PYTHON) scripts/utils/send_notification.py --message "$(MSG)" $(if $(TYPE),--type $(TYPE),)
+	@$(PYTHON) scripts/monitoring/send_notification.py --message "$(MSG)" $(if $(TYPE),--type $(TYPE),)
 
 smart-alerts: ## Run intelligent alerting system
-	@$(PYTHON) scripts/utils/smart_alerts.py
+	@$(PYTHON) scripts/monitoring/smart_alerts.py
 
 smart-alerts-notify: ## Run smart alerts with notifications
-	@$(PYTHON) scripts/utils/smart_alerts.py --notify
+	@$(PYTHON) scripts/monitoring/smart_alerts.py --notify
 
 smart-alerts-compare: ## Run smart alerts with comparison to previous snapshot
-	@$(PYTHON) scripts/utils/smart_alerts.py --compare --notify
+	@$(PYTHON) scripts/monitoring/smart_alerts.py --compare --notify
 
 compare-backups: ## Compare two backups (usage: make compare-backups B1=backup1 B2=backup2)
 	@if [ -z "$(B1)" ] || [ -z "$(B2)" ]; then \
@@ -213,7 +213,7 @@ compare-backups: ## Compare two backups (usage: make compare-backups B1=backup1 
 		echo "Usage: make compare-backups B1=backups/2024-01-01 B2=backups/2024-01-15"; \
 		exit 1; \
 	fi
-	@$(PYTHON) scripts/utils/compare_backups.py $(B1) $(B2) $(if $(FORMAT),--format $(FORMAT),)
+	@$(PYTHON) scripts/backup/compare_backups.py $(B1) $(B2) $(if $(FORMAT),--format $(FORMAT),)
 
 ##@ Interactive
 
