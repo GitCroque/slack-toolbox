@@ -177,6 +177,44 @@ dashboard: ## Generate HTML dashboard
 	@$(PYTHON) scripts/utils/generate_dashboard.py
 	@echo "✅ Dashboard generated: dashboard.html"
 
+##@ Enterprise Features
+
+setup-wizard: ## Run interactive configuration wizard
+	@$(PYTHON) setup_wizard.py
+
+export-pdf: ## Export users to PDF (usage: make export-pdf TYPE=users OUTPUT=report.pdf)
+	@if [ -z "$(TYPE)" ]; then \
+		echo "❌ Error: TYPE parameter required"; \
+		echo "Usage: make export-pdf TYPE=users OUTPUT=report.pdf"; \
+		exit 1; \
+	fi
+	@$(PYTHON) scripts/utils/export_pdf.py --type $(TYPE) $(if $(OUTPUT),--output $(OUTPUT),)
+
+notify: ## Send Slack notification (usage: make notify MSG="Backup complete")
+	@if [ -z "$(MSG)" ]; then \
+		echo "❌ Error: MSG parameter required"; \
+		echo "Usage: make notify MSG=\"Your message here\""; \
+		exit 1; \
+	fi
+	@$(PYTHON) scripts/utils/send_notification.py --message "$(MSG)" $(if $(TYPE),--type $(TYPE),)
+
+smart-alerts: ## Run intelligent alerting system
+	@$(PYTHON) scripts/utils/smart_alerts.py
+
+smart-alerts-notify: ## Run smart alerts with notifications
+	@$(PYTHON) scripts/utils/smart_alerts.py --notify
+
+smart-alerts-compare: ## Run smart alerts with comparison to previous snapshot
+	@$(PYTHON) scripts/utils/smart_alerts.py --compare --notify
+
+compare-backups: ## Compare two backups (usage: make compare-backups B1=backup1 B2=backup2)
+	@if [ -z "$(B1)" ] || [ -z "$(B2)" ]; then \
+		echo "❌ Error: B1 and B2 parameters required"; \
+		echo "Usage: make compare-backups B1=backups/2024-01-01 B2=backups/2024-01-15"; \
+		exit 1; \
+	fi
+	@$(PYTHON) scripts/utils/compare_backups.py $(B1) $(B2) $(if $(FORMAT),--format $(FORMAT),)
+
 ##@ Interactive
 
 interactive: ## Start interactive CLI
@@ -195,6 +233,28 @@ format: ## Format code (requires black)
 check: ## Check code quality
 	@echo "🔍 Checking code..."
 	@$(PYTHON) -m pyflakes scripts/ lib/ || echo "Install pyflakes: pip install pyflakes"
+
+run-tests: ## Run pytest test suite
+	@echo "🧪 Running tests..."
+	@pytest tests/ -v
+
+test-coverage: ## Run tests with coverage report
+	@echo "🧪 Running tests with coverage..."
+	@pytest tests/ -v --cov=lib --cov=scripts --cov-report=html --cov-report=term
+	@echo "📊 Coverage report: htmlcov/index.html"
+
+pre-commit-install: ## Install pre-commit hooks
+	@echo "🎣 Installing pre-commit hooks..."
+	@pre-commit install
+	@echo "✅ Pre-commit hooks installed!"
+
+pre-commit-run: ## Run pre-commit on all files
+	@echo "🎣 Running pre-commit checks..."
+	@pre-commit run --all-files
+
+pre-commit-update: ## Update pre-commit hooks
+	@echo "🎣 Updating pre-commit hooks..."
+	@pre-commit autoupdate
 
 ##@ Examples
 

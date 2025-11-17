@@ -342,6 +342,158 @@ Scripts cron prêts à l'emploi dans `cron/` :
 
 Voir `cron/README.md` pour la configuration.
 
+## 🏢 Fonctionnalités Enterprise
+
+### 🧪 Tests Automatisés avec pytest
+Suite complète de tests unitaires et d'intégration :
+```bash
+# Exécuter tous les tests
+pytest tests/ -v
+
+# Avec couverture de code
+pytest tests/ -v --cov=lib --cov=scripts --cov-report=html
+
+# Tests spécifiques
+pytest tests/test_utils.py
+pytest tests/test_slack_client.py
+```
+
+Configuration dans `pytest.ini` avec fixtures et mocks pour tester sans appels API réels.
+
+### 🔄 CI/CD avec GitHub Actions
+Pipeline automatisé à chaque push et pull request :
+- ✅ Tests multi-versions Python (3.8, 3.9, 3.10, 3.11)
+- ✅ Linting avec flake8 et black
+- ✅ Scan de sécurité avec bandit et safety
+- ✅ Vérification de build
+- ✅ Coverage reporting avec Codecov
+
+Configuration dans `.github/workflows/ci.yml` et `.github/workflows/release.yml`
+
+### 📄 Export PDF des Rapports
+Génération de rapports professionnels au format PDF :
+```bash
+# Export des utilisateurs en PDF
+python3 scripts/utils/export_pdf.py --type users --output users.pdf
+
+# Rapport d'audit en PDF
+python3 scripts/utils/export_pdf.py --type audit --output audit.pdf
+
+# Rapport d'activité personnalisé
+python3 scripts/audit/activity_report.py --days 30 --format pdf --output activity.pdf
+```
+
+Rapports formatés avec tableaux, graphiques et mise en page professionnelle.
+
+### 🔔 Notifications Slack via Webhooks
+Système de notifications intelligent pour alertes et rapports :
+```bash
+# Envoyer une notification simple
+python3 scripts/utils/send_notification.py --message "Backup terminé avec succès"
+
+# Notification avec formatage riche
+python3 scripts/utils/send_notification.py --title "Backup" --message "Terminé" --type success
+
+# Intégration automatique dans les scripts
+# - Notifications de backup
+# - Alertes de sécurité
+# - Rapports d'activité
+```
+
+Configurez votre webhook dans `config/config.json` :
+```json
+{
+  "webhook_url": "https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
+}
+```
+
+### 🎛️ Assistant de Configuration Interactif
+Wizard guidé pour configuration simplifiée :
+```bash
+python3 setup_wizard.py
+```
+
+Le wizard vous guide à travers :
+1. ✅ Vérification des prérequis (Python, pip)
+2. ✅ Installation des dépendances
+3. ✅ Configuration du token Slack (avec aide contextuelle)
+4. ✅ Paramètres du workspace
+5. ✅ Test de connexion
+6. ✅ Configuration optionnelle des webhooks et cron jobs
+
+### 🔍 Comparaison de Backups
+Outil pour comparer deux backups et identifier les changements :
+```bash
+# Comparer deux backups
+python3 scripts/utils/compare_backups.py backups/2024-01-01 backups/2024-01-15
+
+# Export en JSON
+python3 scripts/utils/compare_backups.py backup1 backup2 --format json --output diff.json
+
+# Export en CSV (fichiers séparés)
+python3 scripts/utils/compare_backups.py backup1 backup2 --format csv --output comparison
+```
+
+Détecte :
+- 👤 Utilisateurs ajoutés/supprimés/modifiés
+- 📢 Canaux créés/archivés/modifiés
+- 🔐 Changements de permissions
+- 📊 Variations de membres par canal
+- 📁 Différences de fichiers
+
+### 🚨 Système d'Alertes Intelligent
+Détection d'anomalies et alertes automatiques :
+```bash
+# Scan complet du workspace
+python3 scripts/utils/smart_alerts.py
+
+# Avec notifications
+python3 scripts/utils/smart_alerts.py --notify
+
+# Comparaison avec snapshot précédent
+python3 scripts/utils/smart_alerts.py --compare --notify
+
+# Personnalisation des seuils
+python3 scripts/utils/smart_alerts.py --inactive-days 60 --storage-warning 50
+```
+
+Détecte automatiquement :
+- 👥 **Utilisateurs inactifs** (pourcentage élevé)
+- 🔴 **Pics de désactivation** (activité anormale)
+- 🔐 **Changements de permissions** (admins/owners)
+- 💾 **Usage de stockage** (warnings et critiques)
+- 👻 **Comptes invités** (pourcentage élevé)
+- 📦 **Archivages massifs** (pics de canaux archivés)
+- 🌐 **Partages externes** (canaux partagés)
+
+Niveaux d'alerte : INFO, WARNING, CRITICAL
+
+### 🎣 Pre-commit Hooks
+Vérifications automatiques de qualité de code avant chaque commit :
+```bash
+# Installation
+pre-commit install
+
+# Exécuter manuellement
+pre-commit run --all-files
+
+# Mise à jour des hooks
+pre-commit autoupdate
+```
+
+Hooks configurés :
+- ✅ **Black** - Formatage automatique du code
+- ✅ **isort** - Organisation des imports
+- ✅ **Flake8** - Linting et détection d'erreurs
+- ✅ **Bandit** - Scan de sécurité
+- ✅ **Safety** - Vérification des dépendances
+- ✅ **Pydocstyle** - Vérification des docstrings
+- ✅ **Markdownlint** - Qualité des fichiers Markdown
+- ✅ **Détection de clés privées** et secrets
+- ✅ **Validation YAML/JSON**
+
+Voir [PRE_COMMIT_GUIDE.md](PRE_COMMIT_GUIDE.md) pour le guide complet.
+
 ## 📖 Documentation
 
 - **[SLACK_API_GUIDE.md](SLACK_API_GUIDE.md)** - Guide complet de l'API Slack (1300+ lignes)
@@ -351,6 +503,12 @@ Voir `cron/README.md` pour la configuration.
   - 3 exemples pratiques complets
   - Gestion des erreurs et rate limiting
   - Debugging
+
+- **[PRE_COMMIT_GUIDE.md](PRE_COMMIT_GUIDE.md)** - Guide complet des pre-commit hooks
+  - Installation et configuration
+  - Utilisation et bonnes pratiques
+  - Résolution des problèmes
+  - Personnalisation des hooks
 
 - **[FAQ.md](FAQ.md)** - Questions fréquentes et troubleshooting
 - **[QUICKSTART.md](QUICKSTART.md)** - Démarrage rapide en 5 minutes
@@ -366,9 +524,20 @@ Pour toute question ou problème:
 
 ## 🎯 Roadmap
 
+### ✅ Récemment Implémenté
+- [x] Tests automatisés avec pytest
+- [x] CI/CD avec GitHub Actions
+- [x] Export PDF des rapports
+- [x] Notifications Slack via webhooks
+- [x] Assistant de configuration interactif
+- [x] Comparaison de backups
+- [x] Système d'alertes intelligent
+- [x] Pre-commit hooks pour qualité de code
+
+### 🚧 En Cours / À Venir
 - [ ] Interface web pour gestion simplifiée
 - [ ] Support des workspaces multiples
-- [ ] Notifications par email
+- [ ] Notifications par email (en plus des webhooks)
 - [ ] Intégration avec d'autres outils (Google Workspace, etc.)
-- [ ] Dashboard analytics en temps réel
-- [ ] Automatisation avec scheduler intégré
+- [ ] Dashboard analytics en temps réel (actuellement statique)
+- [ ] Automatisation avec scheduler intégré (actuellement via cron)

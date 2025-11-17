@@ -1,0 +1,50 @@
+# Markdownlint configuration
+# See https://github.com/DavidAnson/markdownlint for rules
+
+# Default state for all rules
+default: true
+
+# MD013: Line length
+MD013:
+  # Maximum line length
+  line_length: 120
+  # Strict mode - don't allow long lines even in code blocks
+  strict: false
+  # Allow long lines in tables
+  tables: false
+
+# MD024: Multiple headings with the same content
+MD024:
+  # Allow duplicate headings in different sections
+  allow_different_nesting: true
+
+# MD033: Inline HTML
+MD033:
+  # Allow specific HTML elements
+  allowed_elements:
+    - br
+    - details
+    - summary
+    - img
+    - a
+
+# MD034: Bare URLs
+MD034: false
+
+# MD041: First line in file should be a top level heading
+MD041: false
+
+# MD046: Code block style
+MD046:
+  # Prefer fenced code blocks
+  style: fenced
+
+# MD049: Emphasis style
+MD049:
+  # Prefer asterisks for emphasis
+  style: asterisk
+
+# MD050: Strong style
+MD050:
+  # Prefer asterisks for strong
+  style: asterisk

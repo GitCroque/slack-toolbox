@@ -1,0 +1,31 @@
+# Bandit configuration file
+# Security linter for Python
+
+# Exclusions
+exclude_dirs:
+  - /tests/
+  - /venv/
+  - /env/
+  - /.venv/
+  - /__pycache__/
+  - /.pytest_cache/
+  - /build/
+  - /dist/
+
+# Tests to skip
+skips:
+  # B101: assert_used - we use asserts in tests
+  - B101
+  # B601: paramiko_calls - if using paramiko, it's intentional
+  - B601
+
+# Tests to run (empty means all)
+tests:
+
+# Severity level
+# Options: LOW, MEDIUM, HIGH
+severity: MEDIUM
+
+# Confidence level
+# Options: LOW, MEDIUM, HIGH
+confidence: MEDIUM
