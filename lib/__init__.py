@@ -60,8 +60,13 @@ from .alerts import Alert, AlertDetector, AlertManager
 # Notifications
 from .notifier import SlackWebhookNotifier, EmailNotifier, MultiNotifier
 
-# PDF generation
-from .pdf_generator import PDFReport
+# PDF generation (optional dependency)
+try:
+    from .pdf_generator import PDFReport
+    _PDF_AVAILABLE = True
+except ImportError:
+    PDFReport = None
+    _PDF_AVAILABLE = False
 
 __version__ = "1.0.0"
 
