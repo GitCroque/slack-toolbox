@@ -2,7 +2,9 @@
 
 Une collection complète de scripts pour gérer, auditer et administrer votre espace de travail Slack.
 
-> 📚 **Nouveau !** [Guide complet de l'API Slack](SLACK_API_GUIDE.md) - Documentation détaillée pour comprendre et utiliser l'API Slack
+> 📚 **Complete documentation available on the [Wiki](https://github.com/GitCroque/slack-toolbox/wiki)** - Installation, Configuration, Usage, Examples, FAQ, and more!
+
+> 📖 **New!** [Complete Slack API Guide](https://github.com/GitCroque/slack-toolbox/wiki/SLACK_API_GUIDE) - Detailed documentation to understand and use the Slack API
 
 ## 🎯 Fonctionnalités
 
@@ -586,22 +588,32 @@ Le projet a été entièrement réorganisé pour une meilleure maintenabilité:
 - Coverage tracking
 - Tests multi-versions Python (3.8-3.11)
 
-Pour plus de détails, consultez [ARCHITECTURE.md](ARCHITECTURE.md).
+Pour plus de détails, consultez [ARCHITECTURE sur le Wiki](https://github.com/GitCroque/slack-toolbox/wiki/ARCHITECTURE).
 
 ## 📖 Documentation
 
-### Guides principaux
+📚 **All documentation is available on the [Wiki](https://github.com/GitCroque/slack-toolbox/wiki)**
 
-- **[README.md](README.md)** - Ce fichier - Vue d'ensemble et utilisation
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Architecture détaillée du projet
+### Main Documentation
+
+- **[Installation](https://github.com/GitCroque/slack-toolbox/wiki/INSTALLATION)** - Complete installation guide
+- **[Configuration](https://github.com/GitCroque/slack-toolbox/wiki/CONFIGURATION)** - Detailed configuration
+- **[Usage](https://github.com/GitCroque/slack-toolbox/wiki/UTILISATION)** - User guide
+- **[Quick Start](https://github.com/GitCroque/slack-toolbox/wiki/QUICKSTART)** - Quick start guide
+- **[Examples](https://github.com/GitCroque/slack-toolbox/wiki/EXAMPLES)** - 30+ practical examples
+- **[FAQ](https://github.com/GitCroque/slack-toolbox/wiki/FAQ)** - Frequently asked questions
+
+### For Developers
+
+- **[Architecture](https://github.com/GitCroque/slack-toolbox/wiki/ARCHITECTURE)** - Technical architecture
   - Structure des composants
   - Flux de données
   - Patterns et conventions
   - Design decisions
 
-### Guides techniques
-
-- **[SLACK_API_GUIDE.md](SLACK_API_GUIDE.md)** - Guide complet de l'API Slack (1300+ lignes)
+- **[Development](https://github.com/GitCroque/slack-toolbox/wiki/DEVELOPPEMENT)** - Developer guide
+- **[Contributing](https://github.com/GitCroque/slack-toolbox/wiki/CONTRIBUTING)** - How to contribute
+- **[Slack API Guide](https://github.com/GitCroque/slack-toolbox/wiki/SLACK_API_GUIDE)** - Complete API guide (1300+ lines)
   - Concepts fondamentaux
   - Authentification et permissions
   - Toutes les méthodes API
@@ -609,24 +621,26 @@ Pour plus de détails, consultez [ARCHITECTURE.md](ARCHITECTURE.md).
   - Gestion des erreurs et rate limiting
   - Debugging
 
-- **[PRE_COMMIT_GUIDE.md](PRE_COMMIT_GUIDE.md)** - Guide complet des pre-commit hooks
+- **[Pre-Commit Guide](https://github.com/GitCroque/slack-toolbox/wiki/PRE_COMMIT_GUIDE)** - Complete pre-commit hooks guide
+
+### Security & Automation
+
+- **[Security](https://github.com/GitCroque/slack-toolbox/wiki/SECURITE)** - Security best practices
+- **[Automation](https://github.com/GitCroque/slack-toolbox/wiki/CRON_AUTOMATION)** - Cron scripts
+
+> 💡 **Files in `./wiki/` are the sources.** Complete documentation is published on the [GitHub Wiki](https://github.com/GitCroque/slack-toolbox/wiki).
   - Installation et configuration
   - Utilisation et bonnes pratiques
   - Résolution des problèmes
   - Personnalisation des hooks
 
-### Guides utilisateur
-
-- **[FAQ.md](FAQ.md)** - Questions fréquentes et troubleshooting
-- **[QUICKSTART.md](QUICKSTART.md)** - Démarrage rapide en 5 minutes
-- **[EXAMPLES.md](examples/EXAMPLES.md)** - 30+ exemples d'utilisation
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Guide de contribution
 
 ## 🆘 Support
 
 Pour toute question ou problème:
 - Ouvrez une issue sur GitHub
-- Consultez le [Guide API Slack](SLACK_API_GUIDE.md) pour les détails techniques
+- Consultez le [Guide API Slack](https://github.com/GitCroque/slack-toolbox/wiki/SLACK_API_GUIDE) pour les détails techniques
+- Visitez le [Wiki complet](https://github.com/GitCroque/slack-toolbox/wiki) pour toute la documentation
 - Documentation officielle Slack API: https://api.slack.com/
 
 ## 🎯 Roadmap

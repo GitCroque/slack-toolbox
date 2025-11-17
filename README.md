@@ -40,15 +40,30 @@ C'est tout ! L'assistant configure automatiquement votre environnement.
 
 ## 📚 Documentation
 
-Toute la documentation est dans le **[Wiki](./wiki/)** :
+📖 **Toute la documentation est disponible sur le [Wiki](https://github.com/GitCroque/slack-toolbox/wiki)**
 
-- **[Installation](./wiki/INSTALLATION.md)** - Guide d'installation complet
-- **[Configuration](./wiki/CONFIGURATION.md)** - Configuration détaillée
-- **[Utilisation](./wiki/UTILISATION.md)** - Guide utilisateur
-- **[Architecture](./wiki/ARCHITECTURE.md)** - Architecture technique
-- **[Développement](./wiki/DEVELOPPEMENT.md)** - Guide développeur
-- **[FAQ](./wiki/FAQ.md)** - Questions fréquentes
-- **[Sécurité](./wiki/SECURITE.md)** - Bonnes pratiques sécurité
+### Documentation principale
+
+- **[Installation](https://github.com/GitCroque/slack-toolbox/wiki/INSTALLATION)** - Guide d'installation complet
+- **[Configuration](https://github.com/GitCroque/slack-toolbox/wiki/CONFIGURATION)** - Configuration détaillée
+- **[Utilisation](https://github.com/GitCroque/slack-toolbox/wiki/UTILISATION)** - Guide utilisateur
+- **[Quick Start](https://github.com/GitCroque/slack-toolbox/wiki/QUICKSTART)** - Démarrage rapide
+- **[Exemples](https://github.com/GitCroque/slack-toolbox/wiki/EXAMPLES)** - 30+ exemples pratiques
+- **[FAQ](https://github.com/GitCroque/slack-toolbox/wiki/FAQ)** - Questions fréquentes
+
+### Pour les développeurs
+
+- **[Architecture](https://github.com/GitCroque/slack-toolbox/wiki/ARCHITECTURE)** - Architecture technique
+- **[Développement](https://github.com/GitCroque/slack-toolbox/wiki/DEVELOPPEMENT)** - Guide développeur
+- **[Contributing](https://github.com/GitCroque/slack-toolbox/wiki/CONTRIBUTING)** - Comment contribuer
+- **[API Slack Guide](https://github.com/GitCroque/slack-toolbox/wiki/SLACK_API_GUIDE)** - Guide complet API
+
+### Sécurité & Automatisation
+
+- **[Sécurité](https://github.com/GitCroque/slack-toolbox/wiki/SECURITE)** - Bonnes pratiques sécurité
+- **[Automatisation](https://github.com/GitCroque/slack-toolbox/wiki/CRON_AUTOMATION)** - Scripts cron
+
+> 💡 **Les fichiers dans `./wiki/` sont les sources.** La documentation complète est publiée sur le [Wiki GitHub](https://github.com/GitCroque/slack-toolbox/wiki).
 
 ---
 
