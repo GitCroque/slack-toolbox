@@ -12,10 +12,14 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 import time
 
+# Import validators for config validation
+sys.path.insert(0, str(Path(__file__).parent))
+from validators import validate_webhook_url, ValidationError
+
 class SlackManager:
     """Centralized Slack API client with error handling and rate limiting"""
 
-    def __init__(self, config_path: Optional[str] = None):
+    def __init__(self, config_path: Optional[str] = None) -> None:
         """
         Initialize Slack client with configuration
 
@@ -26,6 +30,8 @@ class SlackManager:
             config_path = Path(__file__).parent.parent / "config" / "config.json"
 
         self.config = self._load_config(config_path)
+        self._validate_config()
+
         self.token = self.config.get('slack_token')
 
         if not self.token or self.token == "xoxb-your-bot-token-here":
@@ -48,6 +54,31 @@ class SlackManager:
 
         with open(config_path, 'r') as f:
             return json.load(f)
+
+    def _validate_config(self) -> None:
+        """
+        Validate configuration parameters at startup
+
+        Raises:
+            ValueError: If configuration is invalid
+        """
+        # Validate webhook URL if present
+        webhook_url = self.config.get('webhook_url')
+        if webhook_url and webhook_url != "https://hooks.slack.com/services/YOUR/WEBHOOK/URL":
+            try:
+                validate_webhook_url(webhook_url)
+            except ValidationError as e:
+                raise ValueError(f"Invalid webhook URL in configuration: {e}")
+
+        # Validate max_retries
+        max_retries = self.config.get('max_retries', 3)
+        if not isinstance(max_retries, int) or max_retries < 0:
+            raise ValueError(f"max_retries must be a positive integer, got: {max_retries}")
+
+        # Validate rate_limit_delay
+        rate_limit = self.config.get('rate_limit_delay', 1)
+        if not isinstance(rate_limit, (int, float)) or rate_limit < 0:
+            raise ValueError(f"rate_limit_delay must be a positive number, got: {rate_limit}")
 
     def _api_call_with_retry(self, method: str, **kwargs) -> Dict:
         """

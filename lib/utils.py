@@ -8,11 +8,11 @@ import json
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Generator
 import time
 
 
-def save_to_csv(data: List[Dict], filename: str, fieldnames: Optional[List[str]] = None):
+def save_to_csv(data: List[Dict], filename: str, fieldnames: Optional[List[str]] = None) -> None:
     """
     Save data to CSV file
 
@@ -36,7 +36,7 @@ def save_to_csv(data: List[Dict], filename: str, fieldnames: Optional[List[str]]
     print(f"✅ Saved {len(data)} rows to {filename}")
 
 
-def save_to_json(data: Any, filename: str, pretty: bool = True):
+def save_to_json(data: Any, filename: str, pretty: bool = True) -> None:
     """
     Save data to JSON file
 
@@ -155,7 +155,7 @@ def confirm_action(message: str, default: bool = False) -> bool:
     return response in ['y', 'yes', 'oui']
 
 
-def print_table(data: List[Dict], headers: Optional[List[str]] = None, max_width: int = 100):
+def print_table(data: List[Dict], headers: Optional[List[str]] = None, max_width: int = 100) -> None:
     """
     Print data as a formatted table
 
@@ -190,7 +190,7 @@ def print_table(data: List[Dict], headers: Optional[List[str]] = None, max_width
         print(line)
 
 
-def progress_bar(current: int, total: int, prefix: str = '', suffix: str = '', length: int = 50):
+def progress_bar(current: int, total: int, prefix: str = '', suffix: str = '', length: int = 50) -> None:
     """
     Display a progress bar
 
@@ -278,7 +278,7 @@ def format_bytes(bytes_size: int) -> str:
     return f"{bytes_size:.1f} PB"
 
 
-def batch_process(items: List[Any], batch_size: int = 50, delay: float = 1.0):
+def batch_process(items: List[Any], batch_size: int = 50, delay: float = 1.0) -> Generator[List[Any], None, None]:
     """
     Generator to process items in batches with delay
 
@@ -329,7 +329,7 @@ def create_backup_filename(base_name: str, extension: str = 'json') -> str:
     return f"{base_name}_{timestamp}.{extension}"
 
 
-def ensure_directory(path: str):
+def ensure_directory(path: str) -> None:
     """
     Ensure a directory exists, create if it doesn't
 
@@ -337,3 +337,56 @@ def ensure_directory(path: str):
         path: Directory path
     """
     Path(path).mkdir(parents=True, exist_ok=True)
+
+
+def load_config(config_path: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Load configuration from JSON file
+
+    Args:
+        config_path: Path to config.json file. If None, uses default location.
+
+    Returns:
+        Configuration dictionary
+
+    Raises:
+        FileNotFoundError: If config file doesn't exist
+        json.JSONDecodeError: If config file is invalid JSON
+    """
+    if config_path is None:
+        # Default to config/config.json relative to project root
+        config_path = Path(__file__).parent.parent / "config" / "config.json"
+    else:
+        config_path = Path(config_path)
+
+    if not config_path.exists():
+        raise FileNotFoundError(
+            f"Configuration file not found: {config_path}\n"
+            f"Please copy config/config.example.json to config/config.json"
+        )
+
+    with open(config_path, 'r', encoding='utf-8') as f:
+        config = json.load(f)
+
+    return config
+
+
+def similar(text1: str, text2: str) -> float:
+    """
+    Calculate similarity ratio between two strings using SequenceMatcher
+
+    Args:
+        text1: First string
+        text2: Second string
+
+    Returns:
+        Similarity ratio between 0.0 (completely different) and 1.0 (identical)
+
+    Example:
+        >>> similar('John Doe', 'John Do')
+        0.94
+        >>> similar('abc', 'xyz')
+        0.0
+    """
+    from difflib import SequenceMatcher
+    return SequenceMatcher(None, text1, text2).ratio()
