@@ -33,8 +33,9 @@ class SlackManager:
         self._validate_config()
 
         self.token = self.config.get('slack_token')
+        placeholder = self.config.get('placeholder_token', 'xoxb-your-bot-token-here')
 
-        if not self.token or self.token == "xoxb-your-bot-token-here":
+        if not self.token or self.token == placeholder:
             raise ValueError(
                 "Slack token not configured. Please update config/config.json with your Slack token.\n"
                 "Visit https://api.slack.com/apps to create an app and get your token."

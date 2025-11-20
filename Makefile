@@ -256,6 +256,11 @@ pre-commit-update: ## Update pre-commit hooks
 	@echo "🎣 Updating pre-commit hooks..."
 	@pre-commit autoupdate
 
+lock-dependencies: ## Generate requirements.lock from requirements.txt
+	@echo "🔒 Locking dependencies..."
+	@pip-compile --output-file=requirements.lock --generate-hashes requirements.txt
+	@echo "✅ Dependencies locked!"
+
 ##@ Examples
 
 example-onboard: ## Example: Onboard new users
