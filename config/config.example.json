@@ -1,5 +1,6 @@
 {
   "slack_token": "xoxb-your-bot-token-here",
+  "placeholder_token": "xoxb-your-bot-token-here",
   "workspace_name": "YourCompany",
   "default_export_format": "csv",
   "timezone": "Europe/Paris",
