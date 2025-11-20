@@ -77,7 +77,11 @@ check_pip() {
 install_dependencies() {
     print_info "Installing Python dependencies..."
 
-    if [ -f "requirements.txt" ]; then
+    if [ -f "requirements.lock" ]; then
+        pip3 install -r requirements.lock --quiet
+        print_success "Dependencies installed"
+    elif [ -f "requirements.txt" ]; then
+        print_warning "requirements.lock not found, falling back to requirements.txt"
         pip3 install -r requirements.txt --quiet
         print_success "Dependencies installed"
     else
@@ -116,11 +120,9 @@ create_directories() {
 set_permissions() {
     print_info "Setting file permissions..."
 
-    # Make all Python scripts executable
-    find scripts -name "*.py" -type f -exec chmod +x {} \;
-    find lib -name "*.py" -type f -exec chmod +x {} \;
-
-    # Make install.sh executable
+    # Make main scripts executable
+    chmod +x slack-manager.py 2>/dev/null || true
+    chmod +x setup_wizard.py 2>/dev/null || true
     chmod +x install.sh 2>/dev/null || true
 
     print_success "Permissions set"
